@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <Link rel="stylesheet" href="GuessNum.css"></Link>
+    <title>Document</title>
+</head>
+<body class=" flex items-center justify-center bg-gradient-to-r from-indigo-400 via-black to-green-200">
+    <Div class="flex flex-col items-center justify-center ">
+        <Form class="flex flex-col items-center justify-center">
+            <Label class="text-xl text-green-500 font-semibold mt-10">Guess The Number</Label>
+            <input class="mt-3 rounded-md" id="guess" type="text">
+            <button id="button" type="submit" class="border mt-5 font-bold px-3 rounded-lg text-red-500  bg-gradient-to-r from from-indigo-400 via-cyan-300 to-sky-400 border-indigo-400"> Check</button>
+        </Form>
+        <p class="text-lg font-bold text-red-500 mt-20">your guesses <span id="Playerguesses" class="text-green-500 font-serif"></span></p>
+        <p class=" mt-2 text-xl font-bold text-green-500 px-3 border rounded-lg"> remaining guesses <span class="text-red-500" id="rguesses">10</span></p>
+        <p class="results mt-5 text-lg text-red-500 font-semibold"> <br><p class="rounded-lg px-3 bg-red-400 cursor-pointer border text-red-700 text-xl font-bold bg-gradient-to-r from from-indigo-400 via-cyan-300 to-sky-400 mt-5" id="newgame"></p></p>
+        
+    </Div>
+    <script>
+        let randomnum= parseInt(Math.random()*100+1)
+        let guess= document.getElementById('guess')
+        const button = document.getElementById('button')
+        let Playerguesses=document.getElementById('Playerguesses')
+        let remainingguesses=document.getElementById('rguesses')
+        let gameresults=document.querySelector('.results')
+        let Newgame=document.getElementById('newgame')
+        let allowedtoplay=true
+        let totalguesses=10
+        let win=false
+        remainingguesses.innerHTML=totalguesses;
+       
+            button.addEventListener('click',(e)=>{
+                e.preventDefault()
+               if (allowedtoplay) {
+                
+                let Guess=parseInt(guess.value)
+                validateguess(Guess);
+               }
+              
+            })
+        
+        function validateguess(Guess){
+        if(totalguesses>0)  {  if (isNaN(Guess)) { 
+                gameresults.innerHTML="Please enter a valid number"
+                
+            }
+            else if (Guess<1) {
+                gameresults.innerHTML="Please enter a number greater than 0"
+            }
+            else if(Guess>100)  {
+                gameresults.innerHTML="Please enter a number smaller than 100"
+                
+            }
+            else{
+                checkguess(Guess)
+            }
+        }
+    
+
+        
+         if(totalguesses==0)  {
+            endgame();
+        
+          } 
+
+        }
+    
+        
+    
+        function checkguess(g) {
+            Playerguesses.innerHTML+= `${g}     `
+            totalguesses--;
+            remainingguesses.innerHTML=totalguesses;
+            if (g==randomnum) { 
+                gameresults.innerHTML="YOU gussed right.  "
+                win=true
+                endgame();
+                
+            }
+            if (g<randomnum) { 
+                gameresults.innerHTML="Too short.  "
+                
+            }
+            if (g>randomnum) { 
+                gameresults.innerHTML="Too long.   "
+                
+            }
+           guess.value="" ;
+          
+            
+        }
+        function endgame() {
+            gameresults.innerHTML+="game ended."
+            allowedtoplay=false
+            if(!win){
+            gameresults.innerHTML+=`  The random number was  ${randomnum}`
+           
+            }
+            newgame();
+        
+        }
+        function newgame() {
+            Newgame.innerHTML+="Start a new Game!!"
+           
+            Newgame.addEventListener('click',function(e){
+                totalguesses=10
+                remainingguesses.innerHTML=totalguesses
+                Playerguesses.innerHTML=""
+                randomnum= parseInt(Math.random()*100+1)
+                allowedtoplay=true
+                win=false
+                gameresults.innerHTML=""
+                Newgame.innerHTML=""
+                
+
+
+           })
+            
+            
+        }
+           
+        
+
+
+
+    </script>
+
+
+    
+</body>
+</html>
